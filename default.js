@@ -87,21 +87,27 @@ var QRCoder = function() {
             saveAs(blob, "qrcode.svg");
         }).appendTo(container);
 
+        valigner();
+
     });
 
-    // Chrome App
-    if (chrome && chrome.tabs) {
-        chrome.tabs.getSelected(null, function(tab) {
-            // set default value as current tab.url
-            $('input[name=content]').val(tab.url);
-        });
-    } else {
-        // set default value as location.href
-        $('input[name=content]').val(location.href);
-    }
-    // run automaticly
-    $('#generate').trigger('click');
-
+    var valigner = function() {
+        console.log('sdfsf');
+        var top = ($(window).height() - $('article').height()) * .5;
+        $('article').css('margin-top', top > 40 ? top : 40);
+    };
+    valigner();
+    // run automagickly
+    $('input[name=content]').on('keydown', function(e) {
+        if (e.keyCode === 13) {
+            $('#generate').trigger('click');
+            $('.button').addClass('active');
+        }
+    }).on('keyup', function(e) {
+        if (e.keyCode === 13) {
+            $('.button').removeClass('active');
+        }
+    }).focus();
 };
 
 $().ready(QRCoder);
